@@ -5,6 +5,7 @@ var http = require('http');
 var bodyParser = require('body-parser');
 var express = require('express');
 var request = require('request');
+var axios = require('axios');
 var router = express();
 var app = express();
 app.use(logger('dev'));
@@ -33,18 +34,42 @@ app.post('/webhook', function(req, res) {
       if (message.message) {
         // Nếu người dùng gửi tin nhắn đến
         if (message.message.text) {
-          var text = message.message.text;
-          if(text == 'hi' || text == "hello")
-          {
-            sendMessage(senderId, "Larva: " + 'Lô con C*c');
-          }
-          else{sendMessage(senderId, "Larva: " + "Xin lỗi, câu hỏi của bạn chưa có trong hệ thống, chúng tôi sẽ cập nhật sớm nhất.");}
+          // var text = message.message.text;
+          // if(text == 'hi' || text == "hello")
+          // {
+          //   sendMessage(senderId, "Larva: " + 'Lô con C*c');
+          // }
+          // else{sendMessage(senderId, "Larva: " + "Xin lỗi, câu hỏi của bạn chưa có trong hệ thống, chúng tôi sẽ cập nhật sớm nhất.");}
+          axios.get('https://code.junookyo.xyz/api/ncov-moh/data.json')
+          .then(function(res) {
+            // convertText(res);
+            sendMessage(senderId, convertText(res));
+          })
+          .catch(function(err) {
+            sendMessage(senderId, "Xảy ra lỗi");
+          })
         }
       }
     }
   }
   res.status(200).send("OK");
 });
+
+function convertText(res) {
+  var status = res.data;
+  
+  if (status.success == true) {
+    var dataGlobal = status.data.global;
+    var dataVN = status.data.vietnam;
+    var messGlobal = 'The gioi: \n Ca nhiem: ' + dataGlobal.cases + '\n Tu vong: ' + dataGlobal.deaths + ' \n Hoi phuc: ' + dataGlobal.recovered;
+    var messVN = 'Viet Nam: \n Ca nhiem: ' + dataVN.cases + '\n Tu vong: ' + dataVN.deaths + ' \n Hoi phuc: ' + dataVN.recovered;
+    // console.log(messVN);
+    return messVN + '\n\n' + messGlobal;
+  } else {
+    return 'Xay ra loi';
+  }
+}
+
 // Gửi thông tin tới REST API để Bot tự trả lời
 function sendMessage(senderId, message) {
   request({
