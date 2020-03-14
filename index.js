@@ -36,7 +36,7 @@ app.post('/webhook', function(req, res) {
           var text = message.message.text;
           if(text == 'hi' || text == "hello")
           {
-            sendMessage(senderId, "Larva: " + 'Xin Chào');
+            sendMessage(senderId, "Larva: " + 'Lô con C*c');
           }
           else{sendMessage(senderId, "Larva: " + "Xin lỗi, câu hỏi của bạn chưa có trong hệ thống, chúng tôi sẽ cập nhật sớm nhất.");}
         }
