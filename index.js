@@ -61,12 +61,12 @@ function convertText(res) {
   if (status.success == true) {
     var dataGlobal = status.data.global;
     var dataVN = status.data.vietnam;
-    var messGlobal = 'The gioi: \n Ca nhiem: ' + dataGlobal.cases + '\n Tu vong: ' + dataGlobal.deaths + ' \n Hoi phuc: ' + dataGlobal.recovered;
-    var messVN = 'Viet Nam: \n Ca nhiem: ' + dataVN.cases + '\n Tu vong: ' + dataVN.deaths + ' \n Hoi phuc: ' + dataVN.recovered;
+    var messGlobal = 'Thế Giới: \n Ca nhiễm: ' + dataGlobal.cases + '\n Tử vong: ' + dataGlobal.deaths + ' \n Hồi phục: ' + dataGlobal.recovered;
+    var messVN = 'Việt Nam: \n Ca nhiễm: ' + dataVN.cases + '\n Tử vong: ' + dataVN.deaths + ' \n Hồi phục: ' + dataVN.recovered;
     // console.log(messVN);
     return messVN + '\n\n' + messGlobal;
   } else {
-    return 'Xay ra loi';
+    return 'Xảy ra lỗi';
   }
 }
 
