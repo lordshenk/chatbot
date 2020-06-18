@@ -32,17 +32,9 @@ app.post('/webhook', function(req, res) {
     for (var message of messaging) {
       var senderId = message.sender.id;
       if (message.message) {
-        // Nếu người dùng gửi tin nhắn đến
         if (message.message.text) {
-          // var text = message.message.text;
-          // if(text == 'hi' || text == "hello")
-          // {
-          //   sendMessage(senderId, "Larva: " + 'Lô con C*c');
-          // }
-          // else{sendMessage(senderId, "Larva: " + "Xin lỗi, câu hỏi của bạn chưa có trong hệ thống, chúng tôi sẽ cập nhật sớm nhất.");}
           axios.get('https://code.junookyo.xyz/api/ncov-moh/data.json')
           .then(function(res) {
-            // convertText(res);
             sendMessage(senderId, convertText(res));
           })
           .catch(function(err) {
@@ -63,14 +55,12 @@ function convertText(res) {
     var dataVN = status.data.vietnam;
     var messGlobal = 'Thế Giới: \n Ca nhiễm: ' + dataGlobal.cases + '\n Tử vong: ' + dataGlobal.deaths + ' \n Hồi phục: ' + dataGlobal.recovered;
     var messVN = 'Việt Nam: \n Ca nhiễm: ' + dataVN.cases + '\n Tử vong: ' + dataVN.deaths + ' \n Hồi phục: ' + dataVN.recovered;
-    // console.log(messVN);
     return messVN + '\n\n' + messGlobal;
   } else {
     return 'Xảy ra lỗi';
   }
 }
 
-// Gửi thông tin tới REST API để Bot tự trả lời
 function sendMessage(senderId, message) {
   request({
     url: 'https://graph.facebook.com/v2.6/me/messages',
